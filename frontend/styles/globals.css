@@ -1,0 +1,314 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+  --primary: #FFC107;
+  --primary-dark: #FF9800;
+  --secondary: #212529;
+  --accent: #0d6efd;
+  --bg-light: #f8f9fa;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.14);
+  --border-radius: 12px;
+  --transition: all 0.25s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #f5f6fa;
+  color: #2d3436;
+  line-height: 1.6;
+}
+
+/* Navbar */
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.taxi-icon {
+  font-size: 1.5rem;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: white;
+  padding: 80px 0 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255,193,7,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.hero-section h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.hero-section .lead {
+  font-size: 1.15rem;
+  opacity: 0.85;
+}
+
+/* Cards */
+.taxi-card {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  border: none;
+  overflow: hidden;
+}
+
+.taxi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Rating Badge */
+.rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #FFC107, #FF9800);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* Rank Number */
+.rank-number {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: white; }
+.rank-2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); color: white; }
+.rank-3 { background: linear-gradient(135deg, #CD7F32, #8B4513); color: white; }
+.rank-other { background: #e9ecef; color: #6c757d; }
+
+/* Like Button */
+.like-btn {
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 30px;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.like-btn:hover {
+  border-color: #e53935;
+  color: #e53935;
+  transform: scale(1.05);
+}
+
+.like-btn.liked {
+  background: linear-gradient(135deg, #ff6b6b, #e53935);
+  border-color: #e53935;
+  color: white;
+}
+
+.like-btn .like-icon {
+  font-size: 1.2rem;
+  transition: transform 0.2s;
+}
+
+.like-btn:hover .like-icon,
+.like-btn.liked .like-icon {
+  transform: scale(1.2);
+}
+
+/* Sort Buttons */
+.sort-btn-group .btn {
+  border-radius: 25px;
+  padding: 8px 20px;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+/* Features Grid */
+.feature-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0f7ff;
+  border: 1px solid #bee3f8;
+  color: #2b6cb0;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+/* Stats Row */
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+}
+
+.stat-item .stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.stat-item .stat-label {
+  font-size: 0.78rem;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Comment Form */
+.comment-form {
+  background: #f8f9fa;
+  border-radius: var(--border-radius);
+  padding: 24px;
+}
+
+.star-rating {
+  display: flex;
+  gap: 4px;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.star-rating input {
+  display: none;
+}
+
+.star-rating label {
+  font-size: 1.5rem;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+  color: #FFC107;
+}
+
+/* Map placeholder */
+.map-placeholder {
+  height: 300px;
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e0);
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #718096;
+  font-size: 1rem;
+}
+
+/* Blog Card */
+.blog-card img {
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Loading Spinner */
+.loading-overlay {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Breadcrumb */
+.breadcrumb-section {
+  background: white;
+  border-bottom: 1px solid #e9ecef;
+  padding: 10px 0;
+}
+
+/* Footer */
+footer {
+  background: #1a1a2e;
+  color: rgba(255,255,255,0.8);
+}
+
+footer a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+footer a:hover {
+  color: #FFC107;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+  
+  .rank-number {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+.like-btn.liked .like-icon {
+  animation: heartbeat 0.3s ease;
+}
