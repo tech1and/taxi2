@@ -36,6 +36,7 @@ class TaxiParkViewSet(viewsets.ReadOnlyModelViewSet):
     ordering_fields = ['likes_count', 'views_count', 'rating', 'created_at']
     ordering = ['-rating', '-likes_count']
 
+
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return TaxiParkDetailSerializer

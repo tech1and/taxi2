@@ -1,9 +1,11 @@
 from django.contrib import admin
 from .models import TaxiPark, Like, Comment
+from import_export.admin import ImportExportModelAdmin
+
 
 
 @admin.register(TaxiPark)
-class TaxiParkAdmin(admin.ModelAdmin):
+class TaxiParkAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ['name', 'district', 'rating', 'likes_count', 'views_count', 'is_active']
     list_filter = ['is_active', 'district', 'has_children_seat', 'has_cargo']
     search_fields = ['name', 'description', 'address']
@@ -34,9 +36,10 @@ class TaxiParkAdmin(admin.ModelAdmin):
             'fields': ('rating', 'views_count', 'likes_count', 'created_at', 'updated_at'),
             'classes': ('collapse',),
         }),
+
     )
     def view_on_site(self, obj):
-        return f'/{obj.slug}/'
+        return f'/taxiparks/{obj.slug}/'
 
 
 @admin.register(Comment)
