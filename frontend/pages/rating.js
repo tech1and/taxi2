@@ -4,8 +4,8 @@ import RatingList from '../components/RatingList';
 export default function RatingPage() {
   return (
     <Layout
-      title="Рейтинг таксопарков Москвы 2024 — Топ-20"
-      description="Полный рейтинг таксопарков Москвы. Сортировка по лайкам, отзывам и просмотрам."
+      title="Таксопарки Москвы Аренда Авто Для Такси"
+      description="Официальные таксопарки Москвы: аренда авто для такси с лицензией от 1 дня. Низкий залог, моментальное подключение к Яндекс Go и Ситимобил. Автопарк от эконом до комфорт+."
     >
       <div className="hero-section py-5">
         <div className="container">

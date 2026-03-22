@@ -3,6 +3,32 @@ from .models import TaxiPark, Like, Comment
 import re
 
 
+def clean_html_whitespace(html: str) -> str:
+    """
+    Удаляет избыточные переносы, пробелы и лишние <br> теги из HTML-контента.
+    """
+    if not html:
+        return html
+    
+    # 1. Нормализуем все переносы строк: \r\n, \r, \n → пробел
+    html = re.sub(r'\r\n?|\n', ' ', html)
+    
+    # 2. Удаляем пробелы между тегами: >   <  →  ><
+    html = re.sub(r'>\s+<', '><', html)
+    
+    # 3. Удаляем <br> в начале/конце блочных элементов
+    html = re.sub(r'(<(div|p|header|section|article|main)[^>]*>)\s*(<br\s*/?>\s*)+', r'\1', html, flags=re.IGNORECASE)
+    html = re.sub(r'(\s*<br\s*/?>\s*)+(</(div|p|header|section|article|main)>)', r'\2', html, flags=re.IGNORECASE)
+    
+    # 4. Заменяем множественные <br> подряд на максимум один
+    html = re.sub(r'(<br\s*/?>\s*){2,}', '<br>', html)
+    
+    # 5. Финальная очистка: множественные пробелы → один
+    html = re.sub(r'\s{2,}', ' ', html)
+    
+    return html.strip()
+
+
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
@@ -15,7 +41,6 @@ class CommentSerializer(serializers.ModelSerializer):
         return value
 
     def validate_text(self, value):
-        # Проверка на URL-спам
         url_pattern = re.compile(
             r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|'
             r'(?:%[0-9a-fA-F][0-9a-fA-F]))+'
@@ -56,6 +81,9 @@ class TaxiParkDetailSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField()
     schema_org = serializers.SerializerMethodField()
     user_liked = serializers.SerializerMethodField()
+    
+    # 🔥 Ключевое: переопределяем description как метод-поле
+    description = serializers.SerializerMethodField()
 
     class Meta:
         model = TaxiPark
@@ -71,6 +99,12 @@ class TaxiParkDetailSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at',
             'comments', 'schema_org', 'user_liked',
         ]
+
+    def get_description(self, obj):
+        """Возвращает очищенное HTML-описание"""
+        if not obj.description:
+            return ""
+        return clean_html_whitespace(obj.description)
 
     def get_comments_count(self, obj):
         return obj.comments.filter(is_approved=True).count()

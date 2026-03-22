@@ -9,7 +9,7 @@ export default function HomePage({ topTaxiparks, latestPosts, stats }) {
     "@type": "WebSite",
     "name": "Рейтинг таксопарков Москвы",
     "url": process.env.NEXT_PUBLIC_SITE_URL,
-    "description": "Независимый рейтинг лучших таксопарков Москвы 2024",
+    "description": "Независимый рейтинг лучших таксопарков Москвы 2026",
     "potentialAction": {
       "@type": "SearchAction",
       "target": `${process.env.NEXT_PUBLIC_SITE_URL}/search?q={search_term_string}`,
@@ -19,7 +19,7 @@ export default function HomePage({ topTaxiparks, latestPosts, stats }) {
 
   return (
     <Layout
-      title="Рейтинг таксопарков Москвы 2024 — Топ-20 лучших"
+      title="Рейтинг таксопарков Москвы 2026 — Топ-20 лучших"
       description="Независимый рейтинг 20 лучших таксопарков Москвы. Сравнивайте цены, читайте отзывы, выбирайте лучшее такси."
       canonical={process.env.NEXT_PUBLIC_SITE_URL}
       schema={homeSchema}
@@ -27,11 +27,11 @@ export default function HomePage({ topTaxiparks, latestPosts, stats }) {
       {/* Hero */}
       <section className="hero-section">
         <div className="container">
-          <div className="row align-items-center">
+		<div className="row align-items-center">
             <div className="col-lg-7">
               <div className="mb-3">
                 <span className="badge bg-warning text-dark fw-bold px-3 py-2">
-                  🏆 Рейтинг 2024
+                  🏆 Рейтинг 2026
                 </span>
               </div>
               <h1 className="fw-black mb-3">

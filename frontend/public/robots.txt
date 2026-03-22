@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /*?*sort_by=
+Disallow: /*?*page=
+
+Sitemap: https://reyting-taksoparkov-moskvy.ru/sitemap.xml
+
+Crawl-delay: 1

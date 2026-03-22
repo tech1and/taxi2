@@ -1,12 +1,13 @@
 from django.db import models
 from django.utils.text import slugify
 import uuid
+from tinymce.models import HTMLField
 
 
 class TaxiPark(models.Model):
     name = models.CharField('Название', max_length=200)
     slug = models.SlugField('URL', max_length=200, unique=True, blank=True)
-    description = models.TextField('Описание')
+    description = HTMLField('Описание')
     short_description = models.CharField('Краткое описание', max_length=500)
     logo = models.ImageField('Логотип', upload_to='taxiparks/logos/', blank=True, null=True)
     

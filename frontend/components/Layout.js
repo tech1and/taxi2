@@ -9,10 +9,10 @@ export default function Layout({ children, title, description, canonical, schema
 
   const siteTitle = title
     ? `${title} | Рейтинг таксопарков Москвы`
-    : 'Рейтинг таксопарков Москвы 2024 — лучшие таксопарки';
+    : 'Рейтинг таксопарков Москвы 2026 — лучшие таксопарки';
 
   const siteDescription = description ||
-    'Рейтинг лучших таксопарков Москвы 2024. Читайте отзывы, сравнивайте цены и выбирайте лучшее такси.';
+    'Рейтинг лучших таксопарков Москвы 2026. Читайте отзывы, сравнивайте цены и выбирайте лучшее такси.';
 
   return (
     <>
@@ -106,9 +106,9 @@ export default function Layout({ children, title, description, canonical, schema
             <div className="col-lg-3">
               <h6 className="text-white mb-3">Популярное</h6>
               <ul className="list-unstyled small">
-                <li><Link href="/taxiparks/yandeks-taksi-moskva">Яндекс Такси</Link></li>
-                <li><Link href="/taxiparks/sitimobil">Ситимобил</Link></li>
-                <li><Link href="/taxiparks/uber-moskva">Uber</Link></li>
+                <li><Link href="/taxiparks/roolim">ROOLIM</Link></li>
+                <li><Link href="/taxiparks/f1rst">F1RST</Link></li>
+                <li><Link href="/taxiparks/prezident">Президент</Link></li>
                 <li><Link href="/blog">Статьи о такси</Link></li>
               </ul>
             </div>
@@ -130,7 +130,7 @@ export default function Layout({ children, title, description, canonical, schema
             <p className="small mb-0">
               <Link href="/privacy">Политика конфиденциальности</Link>
               {' · '}
-              <Link href="/sitemap.xml">Карта сайта</Link>
+              <Link href="/sitemap">Карта сайта</Link>
             </p>
           </div>
         </div>

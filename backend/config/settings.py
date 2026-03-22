@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'import_export',
+    'tinymce',
     'corsheaders',
     'django_filters',
     'apps.blog',
@@ -116,11 +117,23 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# 🔥 Разрешить отправку куки между доменами
+CORS_ALLOW_CREDENTIALS = True
+
+# 🔥 Доверенные источники для CSRF
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    'CSRF_TRUSTED_ORIGINS'
+).split(',')
+
+# 🔥 Убедитесь, что кука доступна по HTTPS
+CSRF_COOKIE_SECURE = True  # Если сайт на HTTPS
+CSRF_COOKIE_SAMESITE = 'Lax'  # Или 'None', если нужны кросс-доменные запросы
+
 CORS_ALLOWED_ORIGINS = os.getenv(
     'CORS_ALLOWED_ORIGINS',
     'http://localhost:3000'
 ).split(',')
-CORS_ALLOW_CREDENTIALS = True
+
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
@@ -159,3 +172,20 @@ LOGGING = {
         },
     },
 }
+
+TINYMCE_JS_URL = os.path.join(STATIC_URL, "/static/tinymce/tinymce.min.js")
+TINYMCE_DEFAULT_CONFIG = {
+    "height": "500px",
+    "width": "960px",
+    "menubar": "file edit view insert format tools table help",
+    "plugins": "advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code "
+    "fullscreen insertdatetime media table paste code help wordcount spellchecker",
+    "toolbar": "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft "
+    "aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor "
+    "backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | "
+    "fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | "
+    "a11ycheck ltr rtl | showcomments addcomment code",
+    "custom_undo_redo_levels": 10,
+    #"language": "ru_ES",  # To force a specific language instead of the Django current language.
+}
+TINYMCE_SPELLCHECKER = True
