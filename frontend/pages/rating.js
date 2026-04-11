@@ -12,6 +12,7 @@ export default function RatingPage({ ratingData }) {
       description="Официальные таксопарки Москвы: аренда авто для такси с лицензией от 1 дня. Низкий залог, моментальное подключение к Яндекс Go и Ситимобил. Автопарк от эконом до комфорт+."
     >
       <Head>
+        <link rel="canonical" href="/rating" />
         {page > 1 && <link rel="prev" href={`/rating?page=${page - 1}`} />}
         {page < totalPages && <link rel="next" href={`/rating?page=${page + 1}`} />}
       </Head>
