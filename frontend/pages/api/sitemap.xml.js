@@ -19,17 +19,23 @@ const formatDate = (date) => {
 
 export default async function handler(req, res) {
   try {
-    // Загружаем данные с бэкенда
-    const [taxiparksRes, blogRes] = await Promise.all([
-      fetch(`${API_URL}/api/taxiparks/?limit=200`, { next: { revalidate: 3600 } }),
-      fetch(`${API_URL}/api/blog/posts/?limit=100`, { next: { revalidate: 3600 } }),
+    // Вычитываем ВСЕ страницы
+    async function fetchAllPages(url) {
+      const all = [];
+      let nextUrl = url;
+      while (nextUrl) {
+        const r = await fetch(nextUrl, { next: { revalidate: 3600 } });
+        const data = await r.json().catch(() => ({}));
+        all.push(...(data.results || []));
+        nextUrl = data.next || null;
+      }
+      return all;
+    }
+
+    const [taxiparks, posts] = await Promise.all([
+      fetchAllPages(`${API_URL}/api/taxiparks/?page_size=50`),
+      fetchAllPages(`${API_URL}/api/blog/posts/?page_size=100`),
     ]);
-
-    const taxiparksData = await taxiparksRes.json().catch(() => ({ results: [] }));
-    const blogData = await blogRes.json().catch(() => ({ results: [] }));
-
-    const taxiparks = taxiparksData.results || taxiparksData || [];
-    const posts = blogData.results || blogData || [];
 
     // Формируем массив всех URL
     const urls = [
