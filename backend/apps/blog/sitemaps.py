@@ -1,5 +1,4 @@
 from django.contrib.sitemaps import Sitemap
-from django.urls import reverse
 from apps.blog.models import Post, Category
 from apps.taxiparks.models import TaxiPark
 
@@ -44,15 +43,3 @@ class TaxiParkSitemap(Sitemap):
 
     def location(self, obj):
         return f'/taxiparks/{obj.slug}/'
-
-
-class StaticViewSitemap(Sitemap):
-    priority = 0.5
-    protocol = 'https'
-    changefreq = 'monthly'
-
-    def items(self):
-        return ['home']
-
-    def location(self, item):
-        return reverse(item)
