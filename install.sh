@@ -469,6 +469,15 @@ server {
         proxy_read_timeout    30s;
     }
 
+    # Sitemap.xml
+    location = /sitemap.xml {
+        proxy_pass         http://127.0.0.1:8000/sitemap.xml;
+        proxy_set_header   Host              \$host;
+        proxy_set_header   X-Real-IP         \$remote_addr;
+        proxy_set_header   X-Forwarded-For   \$proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto \$scheme;
+    }
+
     # Django REST API
     location /api/ {
         limit_req zone=api burst=30 nodelay;
