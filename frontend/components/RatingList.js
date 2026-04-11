@@ -10,7 +10,7 @@ const SORT_OPTIONS = [
 ];
 
 export default function RatingList({ initialData, isSSR = false }) {
-  const [taxiparks, setTaxiparks] = useState(initialData || []);
+  const [taxiparks, setTaxiparks] = useState(initialData?.results || []);
   const [loading, setLoading] = useState(false);
   const [sortBy, setSortBy] = useState(isSSR ? null : 'rating');
   const [currentPage, setCurrentPage] = useState(isSSR ? (initialData?.page || 1) : 1);
