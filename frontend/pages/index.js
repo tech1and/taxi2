@@ -97,7 +97,15 @@ export default function HomePage({ topTaxiparks, latestPosts, stats }) {
             </Link>
           </div>
 
-          <RatingList />
+          <RatingList
+        initialData={{
+          results: topTaxiparks || [],
+          page: 1,
+          totalPages: 1,
+          totalCount: topTaxiparks?.length || 0,
+        }}
+        isSSR={true}
+      />
         </div>
       </section>
 

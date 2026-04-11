@@ -9,13 +9,13 @@ const SORT_OPTIONS = [
   { key: 'views_count', label: '👁 Просмотры', icon: 'bi-eye-fill' },
 ];
 
-export default function RatingList() {
-  const [taxiparks, setTaxiparks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [sortBy, setSortBy] = useState('rating');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
+export default function RatingList({ initialData, isSSR = false }) {
+  const [taxiparks, setTaxiparks] = useState(initialData || []);
+  const [loading, setLoading] = useState(false);
+  const [sortBy, setSortBy] = useState(isSSR ? null : 'rating');
+  const [currentPage, setCurrentPage] = useState(isSSR ? (initialData?.page || 1) : 1);
+  const [totalPages, setTotalPages] = useState(isSSR ? (initialData?.totalPages || 1) : 1);
+  const [totalCount, setTotalCount] = useState(isSSR ? (initialData?.totalCount || 0) : 0);
   const [transitioning, setTransitioning] = useState(false);
 
   const fetchTaxiparks = async (sort, page) => {
@@ -50,6 +50,7 @@ export default function RatingList() {
   };
 
   useEffect(() => {
+    if (isSSR) return; // SSR данные уже загружены
     fetchTaxiparks(sortBy, 1);
   }, [sortBy]);
 
@@ -61,9 +62,14 @@ export default function RatingList() {
 
   const handlePage = (page) => {
     if (page < 1 || page > totalPages || page === currentPage) return;
-    setLoading(true);
-    fetchTaxiparks(sortBy, page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (isSSR) {
+      // SSR — переходим на URL
+      window.location.href = `/rating?page=${page}&sort=${sortBy || 'rating'}`;
+    } else {
+      setLoading(true);
+      fetchTaxiparks(sortBy, page);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   // Генерация номеров страниц
