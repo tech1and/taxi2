@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { taxiparksAPI } from '../lib/api';
 import TaxiParkCard from './TaxiParkCard';
 
@@ -12,11 +12,14 @@ const SORT_OPTIONS = [
 export default function RatingList({ initialData, isSSR = false }) {
   const [taxiparks, setTaxiparks] = useState(initialData?.results || []);
   const [loading, setLoading] = useState(false);
-  const [sortBy, setSortBy] = useState(isSSR ? null : 'rating');
+  const [sortBy, setSortBy] = useState(isSSR ? (initialData?.sortBy || 'rating') : 'rating');
   const [currentPage, setCurrentPage] = useState(isSSR ? (initialData?.page || 1) : 1);
   const [totalPages, setTotalPages] = useState(isSSR ? (initialData?.totalPages || 1) : 1);
   const [totalCount, setTotalCount] = useState(isSSR ? (initialData?.totalCount || 0) : 0);
   const [transitioning, setTransitioning] = useState(false);
+
+  // SSR-данные уже загружены, поэтому первый рендер не требует fetch
+  const isFirstLoad = useRef(isSSR);
 
   const fetchTaxiparks = async (sort, page) => {
     setTransitioning(true);
@@ -50,7 +53,10 @@ export default function RatingList({ initialData, isSSR = false }) {
   };
 
   useEffect(() => {
-    if (isSSR) return; // SSR данные уже загружены
+    if (isFirstLoad.current) {
+      isFirstLoad.current = false;
+      return; // Пропускаем первый рендер — SSR данные уже есть
+    }
     fetchTaxiparks(sortBy, 1);
   }, [sortBy]);
 
