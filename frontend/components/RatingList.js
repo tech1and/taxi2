@@ -13,12 +13,15 @@ export default function RatingList() {
   const [taxiparks, setTaxiparks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState('rating');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
 
-  const fetchTaxiparks = async (sort) => {
+  const fetchTaxiparks = async (sort, page) => {
     setTransitioning(true);
     try {
-      let params = { page_size: 20 };
+      let params = { page_size: 20, page };
 
       if (sort === 'comments') {
         params.sort_by = 'comments';
@@ -28,9 +31,14 @@ export default function RatingList() {
 
       const res = await taxiparksAPI.getList(params);
       const results = res.data.results || res.data;
+      const count = res.data.count || results.length;
+      const total = Math.ceil(count / 20);
 
       setTimeout(() => {
-        setTaxiparks(results.slice(0, 20));
+        setTaxiparks(results);
+        setTotalPages(total);
+        setTotalCount(count);
+        setCurrentPage(page);
         setTransitioning(false);
         setLoading(false);
       }, 200);
@@ -42,13 +50,83 @@ export default function RatingList() {
   };
 
   useEffect(() => {
-    fetchTaxiparks(sortBy);
+    fetchTaxiparks(sortBy, 1);
   }, [sortBy]);
 
   const handleSort = (sort) => {
     if (sort === sortBy) return;
     setLoading(true);
     setSortBy(sort);
+  };
+
+  const handlePage = (page) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    setLoading(true);
+    fetchTaxiparks(sortBy, page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Генерация номеров страниц
+  const renderPagination = () => {
+    if (totalPages <= 1) return null;
+
+    const pages = [];
+    const showPages = [];
+
+    showPages.push(1);
+    if (currentPage > 3) showPages.push('...');
+    for (let i = Math.max(2, currentPage - 2); i <= Math.min(totalPages - 1, currentPage + 2); i++) {
+      showPages.push(i);
+    }
+    if (currentPage < totalPages - 2) showPages.push('...');
+    if (totalPages > 1) showPages.push(totalPages);
+
+    // Убираем дубликаты и "..." подряд
+    const unique = [];
+    let prevEllipsis = false;
+    for (const p of showPages) {
+      if (p === '...') {
+        if (!prevEllipsis) unique.push(p);
+        prevEllipsis = true;
+      } else {
+        if (!unique.includes(p)) unique.push(p);
+        prevEllipsis = false;
+      }
+    }
+
+    return (
+      <nav className="d-flex justify-content-center align-items-center gap-1 mt-4 flex-wrap" aria-label="Пагинация">
+        <button
+          className="btn btn-sm btn-outline-secondary"
+          disabled={currentPage === 1}
+          onClick={() => handlePage(currentPage - 1)}
+        >
+          ← Назад
+        </button>
+
+        {unique.map((p, i) =>
+          p === '...' ? (
+            <span key={`e${i}`} className="px-2 text-muted">…</span>
+          ) : (
+            <button
+              key={p}
+              className={`btn btn-sm ${currentPage === p ? 'btn-warning fw-bold active' : 'btn-outline-secondary'}`}
+              onClick={() => handlePage(p)}
+            >
+              {p}
+            </button>
+          )
+        )}
+
+        <button
+          className="btn btn-sm btn-outline-secondary"
+          disabled={currentPage === totalPages}
+          onClick={() => handlePage(currentPage + 1)}
+        >
+          Вперёд →
+        </button>
+      </nav>
+    );
   };
 
   return (
@@ -100,7 +178,7 @@ export default function RatingList() {
             <TaxiParkCard
               key={park.id}
               taxipark={park}
-              rank={i + 1}
+              rank={(currentPage - 1) * 20 + i + 1}
             />
           ))
         ) : (
@@ -111,10 +189,13 @@ export default function RatingList() {
         )}
       </div>
 
+      {/* Pagination */}
+      {!loading && taxiparks.length > 0 && renderPagination()}
+
       {/* Count info */}
       {!loading && taxiparks.length > 0 && (
-        <p className="text-muted text-center small mt-4">
-          Показано {taxiparks.length} таксопарков из рейтинга
+        <p className="text-muted text-center small mt-3">
+          Страница {currentPage} из {totalPages} (всего {totalCount} таксопарков)
         </p>
       )}
     </div>
