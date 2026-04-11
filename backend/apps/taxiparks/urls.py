@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .views import TaxiParkViewSet
 
 router = DefaultRouter()
-router.register(r'park', TaxiParkViewSet, basename='taxipark')
+router.register(r'', TaxiParkViewSet, basename='taxipark')
 
 urlpatterns = [
     path('', include(router.urls)),
