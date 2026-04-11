@@ -25,7 +25,14 @@ export default async function handler(req, res) {
       let nextUrl = url;
       while (nextUrl) {
         const r = await fetch(nextUrl, { next: { revalidate: 3600 } });
-        const data = await r.json().catch(() => ({}));
+        const text = await r.text();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          console.error(`Sitemap XML: не JSON ответ от ${nextUrl}`);
+          break;
+        }
         all.push(...(data.results || []));
         nextUrl = data.next || null;
       }

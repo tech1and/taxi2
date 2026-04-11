@@ -24,7 +24,14 @@ export async function getStaticProps() {
       let nextUrl = url;
       while (nextUrl) {
         const res = await fetch(nextUrl, { signal: controller.signal });
-        const data = await res.json();
+        const text = await res.text();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          console.error(`Sitemap: не JSON ответ от ${nextUrl}`);
+          break;
+        }
         all.push(...(data.results || []));
         nextUrl = data.next || null;
       }
@@ -33,7 +40,10 @@ export async function getStaticProps() {
 
     const [taxiparks, postsData] = await Promise.all([
       fetchAllPages(`${API_URL}/api/taxiparks/?page_size=50`),
-      fetch(`${API_URL}/api/blog/posts/?page_size=100`, { signal: controller.signal }).then(r => r.json()),
+      fetch(`${API_URL}/api/blog/posts/?page_size=100`, { signal: controller.signal }).then(r => r.text()).then(text => {
+        try { return JSON.parse(text); }
+        catch { console.error('Sitemap: не JSON ответ от блога'); return {}; }
+      }),
     ]);
 
     clearTimeout(timeout);
