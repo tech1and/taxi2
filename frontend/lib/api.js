@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-const API_BASE = process.env.API_URL
-  ? process.env.API_URL.trim()
+const isServer = typeof window === 'undefined';
+
+const API_BASE = isServer
+  ? (process.env.API_URL || 'http://127.0.0.1:8000').trim()
   : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').trim();
 
 const api = axios.create({
