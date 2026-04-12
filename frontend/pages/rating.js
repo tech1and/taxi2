@@ -38,7 +38,7 @@ export default function RatingPage({ ratingData }) {
 export async function getServerSideProps(context) {
   try {
     const page = parseInt(context.query.page) || 1;
-    const sort = context.query.sort || 'rating';
+    const sort = context.query.sort || 'views_count';
     const pageSize = 20;
 
     let params = { page_size: pageSize, page };

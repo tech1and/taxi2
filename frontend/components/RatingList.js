@@ -12,7 +12,7 @@ const SORT_OPTIONS = [
 export default function RatingList({ initialData, isSSR = false }) {
   const [taxiparks, setTaxiparks] = useState(initialData?.results || []);
   const [loading, setLoading] = useState(false);
-  const [sortBy, setSortBy] = useState(isSSR ? (initialData?.sortBy || 'rating') : 'rating');
+  const [sortBy, setSortBy] = useState(isSSR ? (initialData?.sortBy || 'views_count') : 'views_count');
   const [currentPage, setCurrentPage] = useState(isSSR ? (initialData?.page || 1) : 1);
   const [totalPages, setTotalPages] = useState(isSSR ? (initialData?.totalPages || 1) : 1);
   const [totalCount, setTotalCount] = useState(isSSR ? (initialData?.totalCount || 0) : 0);
@@ -70,7 +70,7 @@ export default function RatingList({ initialData, isSSR = false }) {
     if (page < 1 || page > totalPages || page === currentPage) return;
     if (isSSR) {
       // SSR — переходим на URL
-      window.location.href = `/rating?page=${page}&sort=${sortBy || 'rating'}`;
+      window.location.href = `/rating?page=${page}&sort=${sortBy || 'views_count'}`;
     } else {
       setLoading(true);
       fetchTaxiparks(sortBy, page);
