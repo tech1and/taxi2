@@ -223,7 +223,7 @@ export default function HomePage({ topTaxiparks, latestPosts, stats }) {
 export async function getServerSideProps() {
   try {
     const [taxiRes, blogRes] = await Promise.all([
-      taxiparksAPI.getList({ ordering: '-rating', page_size: 20 }),
+      taxiparksAPI.getList({ ordering: '-views_count', page_size: 20 }),
       blogAPI.getPosts({ page_size: 3 }),
     ]);
 
