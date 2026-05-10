@@ -126,7 +126,7 @@ export default function SitemapPage({ taxiparks, posts }) {
         <section className="mt-5 pt-4 border-top">
           <h2 className="h4 mb-3">📄 Файлы</h2>
           <ul className="list-unstyled">
-            <li><a href="/sitemap.xml">🗂️ sitemap.xml (для поисковиков)</a></li>
+            <li><a href="/sitemap.xml">🗂️ sitemap.xml</a></li>
             <li><a href="/robots.txt">🤖 robots.txt</a></li>
           </ul>
         </section>
