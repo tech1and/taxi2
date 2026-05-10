@@ -2,14 +2,14 @@
 const nextConfig = {
   // 🔹 Вариант А: Отключить standalone (проще для обычного сервера)
   // output: 'standalone',  // ← Закомментируйте эту строку!
-  
+
   // 🔹 Вариант Б: Если оставляете standalone — запускайте через:
   // node .next/standalone/server.js  (а не next start!)
-  
+
   reactStrictMode: false,
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
-  
+
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -17,7 +17,7 @@ const nextConfig = {
       { protocol: 'http', hostname: '**' },
     ],
   },
-  
+
   // 🔹 Проксирование API-запросов на Django-бэкенд
   async rewrites() {
     return [
@@ -27,10 +27,11 @@ const nextConfig = {
       },
     ];
   },
-  
+
   // 🔹 Переменные окружения (без дефолтов, чтобы брать из .env.local)
   env: {
     API_URL: process.env.API_URL,
+    SITE_URL: process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
   },
