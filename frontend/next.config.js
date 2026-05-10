@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // 🔹 Вариант А: Отключить standalone (проще для обычного сервера)
-  // output: 'standalone',  // ← Закомментируйте эту строку!
+  // output: 'standalone',  // ← Закомментируйте эту строку!...
 
   // 🔹 Вариант Б: Если оставляете standalone — запускайте через:
   // node .next/standalone/server.js  (а не next start!)
